@@ -1,0 +1,10 @@
+{
+    "python.pythonPath": "/home/j0/anaconda3/envs/playlist/bin/python",
+    "python.linting.pylintEnabled": false,
+    "python.linting.enabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.banditEnabled": false,
+    "python.linting.flake8Args": [
+        "--ignore=W391,E501,E231,W293,E251,E202,E221,W292,E265,E302,E225"
+    ]
+}
