@@ -17,24 +17,116 @@
         />
 
         <title>Hello, world!</title>
+        <style>
+            body,
+            html {
+                height: 100%;
+            }
+            .fullheight {
+                height: 100%;
+            }
+        </style>
     </head>
     <body>
-        <!-- Optional JavaScript -->
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script
-            src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-            crossorigin="anonymous"
-        ></script>
-        <script
-            src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-            crossorigin="anonymous"
-        ></script>
-        <script
-            src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-            crossorigin="anonymous"
-        ></script>
+        <div class="container fullheight">
+            <div class="row">
+                <div class="col-12" style="text-align: center;">
+                    <h1>Find playlist duration</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <form action="/api" id="my-form" method="POST">
+                        <div class="form-group">
+                            <label for="youtube_url"></label>
+                            <input
+                                type="url"
+                                class="form-control"
+                                name="youtube_url"
+                                id="youtube_url"
+                                placeholder="playlist url"
+                            />
+                        </div>
+                        <div class="row justify-content-center">
+                            <div
+                                class="col-4 form-group"
+                                style="text-align: center;"
+                            >
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary"
+                                    id="my-button"
+                                >
+                                    find duration
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12" style="text-align: center;" id="result">
+                    <h5 style="text-align: center;">0hr : 0mins : 0sec</h5>
+                </div>
+            </div>
+            <div
+                class="row alert alert-danger"
+                role="alert"
+                id="my-error"
+                hidden
+            ></div>
+        </div>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+        <script>
+            document.getElementById("my-error").setAttribute("hidden", true);
+            let form = document.getElementById("my-form");
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                document
+                    .getElementById("my-error")
+                    .setAttribute("hidden", true);
+                youtube_url = e.target.youtube_url.value;
+                document.getElementById(
+                    "my-button"
+                ).innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                            Loading...`;
+                let total_duration = 0.0;
+                try {
+                    res = await axios({
+                        method: "post",
+                        url: "/api",
+                        data: {
+                            youtube_url: youtube_url,
+                        },
+                    });
+                    let totalSeconds = res.data.total_duration;
+
+                    let hours = Math.floor(totalSeconds / 3600);
+                    totalSeconds %= 3600;
+                    let minutes = Math.floor(totalSeconds / 60);
+                    let seconds = totalSeconds % 60;
+                    document.getElementById(
+                        "result"
+                    ).innerHTML = `<h5> ${hours} hrs : ${minutes} mins : ${seconds} secs </h5>`;
+
+                    // console.log(hours, minutes, seconds);
+                } catch (error) {
+                    console.log(error.response.data.error);
+                    if (
+                        error.response.data.error === "Not Found" ||
+                        error.response.data.error === "playlistNotFound"
+                    ) {
+                        document.getElementById("my-error").innerHTML =
+                            "Playlist doesnt exists";
+                        document
+                            .getElementById("my-error")
+                            .removeAttribute("hidden");
+                    }
+                }
+                document.getElementById("my-button").innerHTML =
+                    "find duration";
+            });
+        </script>
     </body>
 </html>

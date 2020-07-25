@@ -18,7 +18,9 @@ def main(request,*args, **kwargs):
         url = parse_url(youtubeurl)
         youtubeurl = url["query"]["list"]
     except KeyError:
-        return Response({"success":False,"error":"invalid_url"})
+        return Response({"success":False,"error":"invalid_url"},status=403)
+    except TypeError:
+        return Response({"success":False,"error":"invalid_url"},status=403)
     
     try:
         playlistid  = youtubeurl
