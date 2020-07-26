@@ -137,4 +137,4 @@ STATIC_URL = '/static/'
 #environment vairables
 
 # YOUTUBE_API_KEY = env('YOUTUBE_API_KEY')
-YOUTUBE_API_KEY = os.environ('YOUTUBE_API_KEY')
+YOUTUBE_API_KEY = os.environ['YOUTUBE_API_KEY']
