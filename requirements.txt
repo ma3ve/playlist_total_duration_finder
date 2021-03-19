@@ -6,7 +6,7 @@ chardet==3.0.4
 Django==3.0.8
 django-environ==0.4.5
 django-rest-framework==0.1.0
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 flake8==3.8.3
 google-api-core==1.22.0
 google-api-python-client==1.10.0
@@ -43,7 +43,7 @@ chardet==3.0.4
 Django==3.0.8
 django-environ==0.4.5
 django-rest-framework==0.1.0
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 flake8==3.8.3
 google-api-core==1.22.0
 google-api-python-client==1.10.0
